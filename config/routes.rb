@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'connects#index'
 
+  get "/auth/:provider/callback" => "connects#create"
+  get "/signout" => "connects#destroy", :as => :signout
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

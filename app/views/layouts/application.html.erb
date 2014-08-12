@@ -7,7 +7,11 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<% if session[:connect_id].present?%>  
+<%= Connect.find(session[:connect_id]).name %>
+<% else %>
+<%= link_to "Sign in with Twitter", '/auth/twitter' %>
+<% end %>
 <%= yield %>
 
 </body>

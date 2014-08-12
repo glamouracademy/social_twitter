@@ -17,25 +17,32 @@ class ConnectsController < ApplicationController
     @connect = Connect.new
   end
 
+  def create
+    auth = request.env["omniauth.auth"]
+    connect = Connect.find_by_provider_and_uid(auth["provider"], auth["uid"]) || Connect.create_with_omniauth(auth)
+    session[:connect_id] = connect.id
+    redirect_to root_url, :notice => "Signed in!"
+  end
+
   # GET /connects/1/edit
   def edit
   end
 
   # POST /connects
   # POST /connects.json
-  def create
-    @connect = Connect.new(connect_params)
+  # def create
+  #   @connect = Connect.new(connect_params)
 
-    respond_to do |format|
-      if @connect.save
-        format.html { redirect_to @connect, notice: 'Connect was successfully created.' }
-        format.json { render :show, status: :created, location: @connect }
-      else
-        format.html { render :new }
-        format.json { render json: @connect.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  #   respond_to do |format|
+  #     if @connect.save
+  #       format.html { redirect_to @connect, notice: 'Connect was successfully created.' }
+  #       format.json { render :show, status: :created, location: @connect }
+  #     else
+  #       format.html { render :new }
+  #       format.json { render json: @connect.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
   # PATCH/PUT /connects/1
   # PATCH/PUT /connects/1.json
